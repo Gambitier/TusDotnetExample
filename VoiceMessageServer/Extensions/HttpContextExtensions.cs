@@ -20,7 +20,7 @@ namespace VoiceMessageServer.Extensions
 
     public static class HttpContextExtensions
     {
-        public static void AddHttpContextAccessor(this IServiceCollection services)
+        public static void AddVoiceMessageServerHttpContextAccessor(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

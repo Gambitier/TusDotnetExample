@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VoiceMessageServer.Extensions;
 
 namespace VoiceMessageServer.Controllers
 {
@@ -26,6 +27,9 @@ namespace VoiceMessageServer.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            string TusServerEndpoint = $"{VoiceMessageServerHttpContext.AppBaseUrl}/files";
+            _logger.LogInformation("TusServer address: {TusServerEndpoint}", TusServerEndpoint);
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

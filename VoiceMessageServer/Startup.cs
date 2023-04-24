@@ -33,7 +33,7 @@ namespace VoiceMessageServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddVoiceMessageServerHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
