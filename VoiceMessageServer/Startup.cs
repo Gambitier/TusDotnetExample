@@ -66,10 +66,14 @@ namespace VoiceMessageServer
                     {
                         ITusFile file = await eventContext.GetFileAsync();
                         Dictionary<string, Metadata> metadata = await file.GetMetadataAsync(eventContext.CancellationToken);
-                        using Stream content = await file.GetContentAsync(eventContext.CancellationToken);
-                        {
-                            await SaveFile(content, metadata);
-                        }
+                        using Stream stream = await file.GetContentAsync(eventContext.CancellationToken);
+                        await SaveFile(stream, metadata);
+
+                        // Don't forget to dispose the stream if you're using it!
+                        await stream.DisposeAsync();
+
+                        var terminationStore = (ITusTerminationStore)eventContext.Store;
+                        await terminationStore.DeleteFileAsync(file.Id, eventContext.CancellationToken);
                     }
                 }
             });
