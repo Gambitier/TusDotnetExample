@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TusDotNetClient;
+using VoiceMessageServer.Extensions;
 
 namespace VoiceMessageServer.Controllers
 {
@@ -14,7 +15,6 @@ namespace VoiceMessageServer.Controllers
     public class TusClientController : ControllerBase
     {
         private readonly ILogger<TusClientController> _logger;
-        private readonly string TusServerEndpoint = "https://localhost:44356/files";
 
         public TusClientController(ILogger<TusClientController> logger)
         {
@@ -26,6 +26,7 @@ namespace VoiceMessageServer.Controllers
         {
             var file = new FileInfo("appsettings.json");
             var client = new TusClient();
+            string TusServerEndpoint = $"{VoiceMessageServerHttpContext.AppBaseUrl}/files";
 
             var metadata = new (string key, string value)[] {
                 (key: "fileNameWithExtension", value: "appsettings.json"),

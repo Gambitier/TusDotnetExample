@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ using tusdotnet.Interfaces;
 using tusdotnet.Models;
 using tusdotnet.Models.Configuration;
 using tusdotnet.Stores;
+using VoiceMessageServer.Extensions;
 
 namespace VoiceMessageServer
 {
@@ -30,6 +33,7 @@ namespace VoiceMessageServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +47,8 @@ namespace VoiceMessageServer
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseHttpContext();
 
             app.UseAuthorization();
 
