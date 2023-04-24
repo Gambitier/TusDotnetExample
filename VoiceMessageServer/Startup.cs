@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using tusdotnet;
 using tusdotnet.Interfaces;
@@ -65,8 +61,9 @@ namespace VoiceMessageServer
                         ITusFile file = await eventContext.GetFileAsync();
                         Dictionary<string, Metadata> metadata = await file.GetMetadataAsync(eventContext.CancellationToken);
                         using Stream content = await file.GetContentAsync(eventContext.CancellationToken);
-
-                        await SaveFile(content, metadata);
+                        {
+                            await SaveFile(content, metadata);
+                        }
                     }
                 }
             });
@@ -81,9 +78,9 @@ namespace VoiceMessageServer
         {
             metadata.TryGetValue("fileNameWithExtension", out Metadata fileNameWithExtensionFromMetadata);
             var fileNameWithExtension = !fileNameWithExtensionFromMetadata.HasEmptyValue
-                ? fileNameWithExtensionFromMetadata.ToString()
+                ? fileNameWithExtensionFromMetadata.GetString(System.Text.Encoding.UTF8)
                 : Guid.NewGuid().ToString();
-            
+
             var basePath = Path.Join(TusFileStoreBaseDir, Guid.NewGuid().ToString());
             Directory.CreateDirectory(basePath);
 

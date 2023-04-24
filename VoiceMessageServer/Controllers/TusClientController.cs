@@ -26,11 +26,6 @@ namespace VoiceMessageServer.Controllers
         {
             var file = new FileInfo("appsettings.json");
             var client = new TusClient();
-            //var metadata = new (string key, string value)[] {
-            //    //new (string key, string value) {
-            //    //    "fileNameWithExtension"=  "appsettings.json";
-            //    //}
-            //};
 
             var metadata = new (string key, string value)[] {
                 (key: "fileNameWithExtension", value: "appsettings.json"),
