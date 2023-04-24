@@ -21,7 +21,7 @@ namespace VoiceMessageServer
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        private readonly string TusFileStoreBaseDir = "voiceMessageFiles";
+        private readonly string TusFileStoreBaseDir = "VoiceMessageFiles";
 
         public Startup(IConfiguration configuration)
         {
