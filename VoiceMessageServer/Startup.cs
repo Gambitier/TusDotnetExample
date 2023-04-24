@@ -27,6 +27,7 @@ namespace VoiceMessageServer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Directory.CreateDirectory(TusFileStoreBaseDir);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -82,8 +83,11 @@ namespace VoiceMessageServer
             var fileNameWithExtension = !fileNameWithExtensionFromMetadata.HasEmptyValue
                 ? fileNameWithExtensionFromMetadata.ToString()
                 : Guid.NewGuid().ToString();
+            
+            var basePath = Path.Join(TusFileStoreBaseDir, Guid.NewGuid().ToString());
+            Directory.CreateDirectory(basePath);
 
-            var filePath = Path.Join(TusFileStoreBaseDir, Guid.NewGuid().ToString(), fileNameWithExtension);
+            var filePath = Path.Join(basePath, fileNameWithExtension);
             using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             {
                 await content.CopyToAsync(fileStream);
